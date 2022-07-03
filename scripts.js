@@ -18,6 +18,7 @@ try {
             batteryLevel(battery.level, battery.charging)
         })
         battery.addEventListener('chargingchange', e => {
+            batteryCharging(battery.charging, battery.level)
             batteryLevel(battery.level, battery.charging)
         })
         battery.addEventListener('chargingtimechange', e => {
@@ -34,35 +35,42 @@ try {
 
     function batteryLevel(level, chargingState) {
         let newLevel = Math.round(level * 100)
+        batteryPercentage.textContent = `${newLevel}%`
+        batteryElement.style.width = `${newLevel}%`
 
         if(!chargingState) {
-            switch (newLevel) {
-                case 20:  
-                    if(!window.confirm("Your Battery Percentage is 20%, Do You Want To Continue?")) {
-                        window.close()
-                    }
-                    break
-                case (newLevel <= 20):
-                    batteryElement.style.backgroundColor = 'orange'
-                    break
-                case 10:
-                    if(!window.confirm("Your Battery Percentage is 10%, Do You Want To Continue?")) {
-                        window.close()
-                    }
-                    break
-                case (newLevel <= 10):
-                    batteryElement.style.backgroundColor = 'red'
-                    break
-                default:
-                   batteryElement.style.backgroundColor = 'rgb(45, 243, 42)'
-                   break
+            if(newLevel === 20) {
+                if(!alert(20)) {
+                    window.close()
+                }
+                batteryElement.style.backgroundColor = 'orange'
+            } else if(newLevel < 20) {
+                batteryElement.style.backgroundColor = 'orange'
+            } else if(newLevel === 10) {
+                if(!alert(10)) {
+                    window.close()
+                }
+                batteryElement.style.backgroundColor = 'red'
+            } else if (newLevel < 10) {
+                batteryElement.style.backgroundColor = 'red'
+            } else {
+                batteryElement.style.backgroundColor = 'rgb(45, 243, 42)'
             }
+
         } else {
             batteryElement.style.backgroundColor = 'white'
         }
 
-        batteryPercentage.textContent = `${newLevel}%`
-        batteryElement.style.width = `${newLevel}%`
+    }
+
+    function batteryCharging(chargingState, level) {
+        let newLevel = level * 100
+        if(newLevel === 10) {
+        }else if((newLevel < 20) && !chargingState) {
+            if(!alert(newLevel)) {
+                window.close()
+            }
+        }
     }
 
     function batteryChargingTime(time) {
@@ -80,6 +88,12 @@ try {
             dischargingTime.innerHTML = `Discharging Time: ${time}s`
         }
     }
+
+    function alert(level) {
+        let value = window.confirm(`Your Battery Percentage is ${level}%, Do You Want To Continue?`)
+        return value
+    }
+
 
 } catch (e) {
     console.log(e)
