@@ -1,0 +1,44 @@
+Battery Status API
+
+Interfaces:
+        BatteryManager
+
+BatteryManager
+
+    EventTarget <- BatteryManager
+    provides information about the system's battery charge level
+    The navigator.getBattery() Return a promise that resolves with a BatteryManager Interface
+
+    Properties:
+        charging
+            When its value changes, the 'chargingchange' event is fired
+            Return:
+                Boolean
+
+        chargingTime
+            When its value changes the 'chargingtimechange' event fired
+            Return:
+                a Number
+
+        dischargingTime
+            When its value changes, the 'dischargingtimechange' event is fired
+            Return:
+                a Number
+
+        level
+            When its value changes, the 'levelchange' event is fired
+            Return:
+                a Number
+
+    events:
+        chargingchange
+            when the battery 'charging' property is updated
+
+        chargingtimechange
+            when the battery 'chargingTime' is updated
+
+        dischargingtimechange
+            when the battery 'dischargingTime' is updated
+
+        levelchange
+            when the battery 'level' property is updated

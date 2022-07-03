@@ -1,0 +1,73 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    width: 100%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: rgba(0, 0, 25, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    color: rgb(30, 180, 230);
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin: 50px 0;
+}
+
+.container {
+    width: 100%;
+    min-height: 200px;
+    color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 25px;
+
+    #batteryPercentage {
+        font-size: 2rem;
+        font-family: 'Courier New', Courier, monospace;
+    }
+}
+
+.batteryContainer {
+    height: 50px;
+    width: 150px;
+    border-radius: 10px;
+    background-color: rgb(47, 35, 217);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    #batteryContain {
+        width: 98%;
+        height: 90%;
+        border-radius: 15px;
+        padding: 0 5px;
+
+        #battery {
+            height: 100%;
+            width: 0%;
+            transition: all 1s ease-in-out;
+            border-radius: 10px;
+        }
+    }
+
+}
+
+#chargingTime, #dischargingTime {
+    font-size: 1.5rem;
+    color: white;
+}
+
