@@ -9,19 +9,16 @@ try {
     navigator.getBattery()
     .then(battery => {
         // Default Values
-        batteryLevel(battery.level)
-        batteryCharging(battery.charging)
+        batteryLevel(battery.level, battery.charging)
         batteryChargingTime(battery.chargingTime)
         batteryDischargingTime(battery.dischargingTime)
-        console.log(battery.chargingTime)
-        console.log(battery.dischargingTime)
 
         // Listening To Events
         battery.addEventListener('levelchange', e => {
-            batteryLevel(battery.level)
+            batteryLevel(battery.level, battery.charging)
         })
         battery.addEventListener('chargingchange', e => {
-            batteryCharging(battery.charging)
+            batteryLevel(battery.level, battery.charging)
         })
         battery.addEventListener('chargingtimechange', e => {
             batteryChargingTime(battery.chargingTime)
@@ -32,28 +29,56 @@ try {
 
     })
     .catch(err => {
-        throw new Error("Some Error Happened by Battery API", err)
+        throw new Error("Thrown an error by Battery API", err)
     })
 
-    function batteryLevel(level) {
-        batteryPercentage.textContent = `${Math.round(level * 100)}%`
-        batteryElement.style.width = `${Math.round(level * 100)}%`
-    }
+    function batteryLevel(level, chargingState) {
+        let newLevel = Math.round(level * 100)
 
-    function batteryCharging(charging) {
-        if(charging) {
-            batteryElement.style.backgroundColor = 'white'
+        if(!chargingState) {
+            switch (newLevel) {
+                case 20:  
+                    if(!window.confirm("Your Battery Percentage is 20%, Do You Want To Continue?")) {
+                        window.close()
+                    }
+                    break
+                case (newLevel <= 20):
+                    batteryElement.style.backgroundColor = 'orange'
+                    break
+                case 10:
+                    if(!window.confirm("Your Battery Percentage is 10%, Do You Want To Continue?")) {
+                        window.close()
+                    }
+                    break
+                case (newLevel <= 10):
+                    batteryElement.style.backgroundColor = 'red'
+                    break
+                default:
+                   batteryElement.style.backgroundColor = 'rgb(45, 243, 42)'
+                   break
+            }
         } else {
-            batteryElement.style.backgroundColor = 'rgb(45, 243, 42)'
+            batteryElement.style.backgroundColor = 'white'
         }
+
+        batteryPercentage.textContent = `${newLevel}%`
+        batteryElement.style.width = `${newLevel}%`
     }
 
     function batteryChargingTime(time) {
-        chargingTime.innerHTML = `Charging Time: ${time}`
+        if(time === Infinity || time === -Infinity) {
+            chargingTime.innerHTML = `Charging Time: N/A`
+        } else {
+            chargingTime.innerHTML = `Charging Time: ${time}s`
+        }
     }
 
     function batteryDischargingTime(time) {
-        dischargingTime.innerHTML = `Discharging Time: ${time}`
+        if(time === Infinity || time === -Infinity) {
+            dischargingTime.innerHTML = `Discharging Time: N/A`
+        } else {
+            dischargingTime.innerHTML = `Discharging Time: ${time}s`
+        }
     }
 
 } catch (e) {
